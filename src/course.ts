@@ -129,11 +129,11 @@ export class CourseTracker extends ItemView {
       }
     };
 
-    let cleanListButton = container.createEl("button", { text: "Clean list" });
-    cleanListButton.style.margin = "5px";
+    let clearListButton = container.createEl("button", { text: "Clear list" });
+    clearListButton.style.margin = "5px";
 
-    // Clean fonction
-    cleanListButton.onclick = () => {
+    // Clear function
+    clearListButton.onclick = () => {
       // Réinitialise l'état de tous les boutons
       Array.from(this.contentEl.querySelectorAll("button")).forEach(button => {
         if (finalList.includes(String(button.textContent))) {
