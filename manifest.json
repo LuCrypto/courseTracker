@@ -1,11 +1,11 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
-	"version": "1.0.0",
+	"id": "Course tracker",
+	"name": "Course tracker",
+	"version": "0.0.1",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "This course tracker can be use for tracking your courses, assignments, and grades. It is a simple and easy to use tool that can help you stay organized and on track with your studies.",
+	"author": "LuCrypto",
+	"authorUrl": "https://twitter.com/LuCryptoFR",
+	"fundingUrl": "https://www.buymeacoffee.com/lucrypto",
 	"isDesktopOnly": false
 }
