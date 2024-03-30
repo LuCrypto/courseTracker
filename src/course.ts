@@ -7,6 +7,8 @@ import { objectOther } from "./data/other";
 import { objectStarches } from "./data/starches";
 import { objectVegetables } from "./data/vegetables";
 import { Category } from "./interface/category";
+import { Food } from "./class/food";
+import { containsFoodWithCodebar, indexOfFoodByName } from "./utils/helpers";
 
 export class CourseTracker extends ItemView {
   constructor(leaf: any) {
@@ -25,15 +27,25 @@ export class CourseTracker extends ItemView {
 
   // This method is called when the view is opened.
   async onOpen() {
-    const finalList: String[] = [];
+    const finalList: Food[] = [];
 
     const container: Element = this.containerEl.children[1];
     container.empty();
     container.createEl("h1", { text: "Course Tracker" });
 
-    this.displayObject(container, finalList);
-    this.createLine(container);
-    this.createFinalList(container, finalList)
+    const containerCenter = container.createDiv({ cls: "containerCenter" });
+
+    const containerDivLeft = containerCenter.createDiv({ cls: "containerDivLeft" });
+    const containerDivRight = containerCenter.createDiv({ cls: "containerDivRight" });
+    containerDivLeft.createEl("h1", { text: "Select your food" });
+    containerDivRight.createEl("h1", { text: "Food selected" });
+
+    this.createLine(containerDivLeft);
+    this.createLine(containerDivRight);
+
+    this.displayObject(containerDivLeft, containerDivRight, finalList);
+    this.createLine(containerDivLeft);
+    this.createFinalList(containerDivLeft, finalList)
   }
 
   // Create a horizontal line
@@ -56,57 +68,65 @@ export class CourseTracker extends ItemView {
   }
 
   // Display categories and elements
-  displayObject(container: Element, finalList: String[]) {
+  displayObject(container: Element, containerList: Element, finalList: Food[]) {
     const allObject: Category[] = this.initObject();
 
     allObject.forEach((category, _) => {
       container.createEl("h1", { text: category.name });
 
       // For each element in the category, create a button
-      category.array.forEach((element, index) => {
-        let button = container.createEl("button", { text: element });
+      category.array.forEach((element: Food, _) => {
+        let button = container.createEl("button", { text: element.name });
 
-        button.onclick = function () {
+        button.onclick = () => {
           // If the element is already in the list, remove it
-          if (finalList.includes(element)) {
-            finalList.splice(finalList.indexOf(element), 1);
+          if (containsFoodWithCodebar(finalList, element.codebar)) {
+            finalList.splice(indexOfFoodByName(finalList, element.name), 1);
             button.toggleClass("selected", false);
           } else { // Instead, add it to the list
             finalList.push(element);
             button.toggleClass("selected", true);
           }
+
+          element.getApi().then((_) => {
+            this.refreshList(container, containerList, finalList);
+          });
         };
       });
       this.createLine(container);
     });
   }
 
+  refreshList(container: Element, finalListContainer: Element, finalList: Food[]) {
+    finalListContainer.empty();
+
+    let ul = container.createEl("ul");
+    finalList.forEach((food: Food) => {
+      let li = container.createEl("li");
+
+      let checkbox = container.createEl("input", { type: "checkbox" });
+      checkbox.id = food.name;
+      checkbox.name = food.name;
+
+      let label = container.createEl("label");
+      label.htmlFor = food.name;
+      label.appendChild(document.createTextNode(food.name));
+
+      li.appendChild(checkbox);
+      li.appendChild(label);
+      ul.appendChild(li);
+    });
+    finalListContainer.appendChild(ul);
+  }
+
   // Create the final list
-  createFinalList(container: Element, finalList: String[]) {
-    let finalListContainer = container.createDiv();
+  createFinalList(container: Element, finalList: Food[]) {
+    const finalListContainer = container.createDiv();
 
     let showFinalListButton = container.createEl("button", { text: "Display list", cls: "showFinalListButton" });
 
-    showFinalListButton.onclick = function () {
-      finalListContainer.empty();
-
-      let ul = container.createEl("ul");
-      finalList.forEach(item => {
-        let li = container.createEl("li");
-
-        let checkbox = container.createEl("input", { type: "checkbox" });
-        checkbox.id = item as string;
-        checkbox.name = item as string;
-
-        let label = container.createEl("label");
-        label.htmlFor = item as string;
-        label.appendChild(document.createTextNode(item as string));
-
-        li.appendChild(checkbox);
-        li.appendChild(label);
-        ul.appendChild(li);
-      });
-      finalListContainer.appendChild(ul);
+    showFinalListButton.onclick = () => {
+      this.refreshList(container, finalListContainer, finalList);
 
       // If list is empty, return this
       if (finalList.length === 0) {
@@ -119,7 +139,7 @@ export class CourseTracker extends ItemView {
     // Clear function
     clearListButton.onclick = () => {
       Array.from(this.contentEl.querySelectorAll("button")).forEach(button => {
-        if (finalList.includes(String(button.textContent))) {
+        if (containsFoodWithCodebar(finalList, String(button.textContent))) {
           button.toggleClass("selected", false);
         }
       });
