@@ -11,6 +11,11 @@ export class Food {
   }
 
   async getApi(): Promise<any> {
+    if (this.codebar === '') {
+      console.log('Codebar is empty');
+      return null;
+    }
+
     const url = `https://world.openfoodfacts.org/api/v2/product/${this.codebar}.json`;
 
     const response = await fetch(url)

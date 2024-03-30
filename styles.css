@@ -35,6 +35,8 @@ button {
 .containerDivRight {
   background-color: rgb(136, 46, 46) !important;
   width: 50% !important;
+
+  display: flex;
 }
 
 

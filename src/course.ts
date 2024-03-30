@@ -1,4 +1,4 @@
-import { ItemView, WorkspaceLeaf } from "obsidian";
+import { ItemView } from "obsidian";
 import { MY_VIEW, NAME_APPLI } from "./constants";
 import { objectCheeze } from "./data/cheeze";
 import { objectFruit } from "./data/fruit";
@@ -98,6 +98,28 @@ export class CourseTracker extends ItemView {
   }
 
   refreshList(container: Element, finalListContainer: Element, finalList: Food[]) {
+    finalListContainer.empty();
+
+    let ul = container.createEl("ul");
+    finalList.forEach((food: Food) => {
+      let li = container.createEl("li");
+
+      let checkbox = container.createEl("input", { type: "checkbox" });
+      checkbox.id = food.name;
+      checkbox.name = food.name;
+
+      let label = container.createEl("label");
+      label.htmlFor = food.name;
+      label.appendChild(document.createTextNode(food.name));
+
+      li.appendChild(checkbox);
+      li.appendChild(label);
+      ul.appendChild(li);
+    });
+    finalListContainer.appendChild(ul);
+  }
+
+  refreshList2(container: Element, finalListContainer: Element, finalList: Food[]) {
     finalListContainer.empty();
 
     let ul = container.createEl("ul");
