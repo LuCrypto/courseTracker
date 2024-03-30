@@ -1,6 +1,13 @@
+import { Food } from "src/class/food";
 import { Category } from "src/interface/category";
 
 export const objectStarches: Category = {
   name: 'Starches',
-  array: ['Pâte pour wrap', 'Riz complet', 'Pâtes complètes', 'Potato', 'Sweet potato']
+  array: [
+    new Food('Pâte pour wrap', ''),
+    new Food('Riz complet', ''),
+    new Food('Pâtes complètes', ''),
+    new Food('Potato', ''),
+    new Food('Sweet potato', ''),
+  ]
 }
