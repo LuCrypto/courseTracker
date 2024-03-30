@@ -13,10 +13,10 @@ During the buying, you just mark item that you take into the store
 You also can **Clear list**
 
 ## The base plugin 
-![alt text](image.png)
+![alt text](/public/image.png)
 
 ## You can add ingredients and show them
-![alt text](image-1.png)
+![alt text](/public/image-1.png)
 
 - Use **Display list** for display them
 - Use **Clear list** for clear the list

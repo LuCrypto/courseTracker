@@ -6,3 +6,28 @@ available in the app when your plugin is enabled.
 If your plugin does not need CSS, delete this file.
 
 */
+
+hr {
+  margin: 10px 0 10px 0;
+}
+
+h1 {
+  margin: 5px;
+  font-size: 20px;
+}
+
+button {
+  margin: 5px;
+  cursor: pointer;
+}
+
+.showFinalListButton {
+  font-size: 1rem;
+  font-family: "Cascadia";
+  background-color: #C78100 !important;
+  /* doesn't work TODO */
+}
+
+.selected {
+  background-color: green !important;
+}

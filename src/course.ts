@@ -13,16 +13,17 @@ export class CourseTracker extends ItemView {
     super(leaf);
   }
 
-  // Cette méthode retourne l'ID de la vue. Obsidian l'utilise pour identifier la vue.
+  // This method returns the view ID. Obsidian uses it to identify the view.
   getViewType() {
     return MY_VIEW;
   }
 
-  // Cette méthode retourne le nom affiché dans l'interface utilisateur d'Obsidian, comme l'onglet de la vue.
+  // This method returns the name displayed in the Obsidian UI, like the view's tab.
   getDisplayText() {
     return NAME_APPLI;
   }
 
+  // This method is called when the view is opened.
   async onOpen() {
     const finalList: String[] = [];
 
@@ -35,13 +36,12 @@ export class CourseTracker extends ItemView {
     this.createFinalList(container, finalList)
   }
 
-  // Crée une ligne horizontale
+  // Create a horizontal line
   createLine(container: Element) {
-    const hr = container.createEl("hr");
-    hr.style.margin = "10px 0 10px 0";
+    container.createEl("hr");
   }
 
-  // Initialise les catégories et les éléments de chaque catégorie
+  // Initialize categories and elements of each category
   initObject(): Category[] {
     const allObject: Category[] = [];
 
@@ -55,28 +55,25 @@ export class CourseTracker extends ItemView {
     return allObject;
   }
 
-  // Affiche les catégories et les éléments de chaque catégorie
+  // Display categories and elements
   displayObject(container: Element, finalList: String[]) {
     const allObject: Category[] = this.initObject();
 
     allObject.forEach((category, _) => {
-      let h1 = container.createEl("h1", { text: category.name });
-      h1.style.margin = "5px";
-      h1.style.fontSize = "20px";
+      container.createEl("h1", { text: category.name });
 
-      // Pour chaque élément, crée un bouton qui, lorsqu'il est cliqué, l'ajoute ou le supprime de la liste finale
+      // For each element in the category, create a button
       category.array.forEach((element, index) => {
         let button = container.createEl("button", { text: element });
-        button.style.margin = "5px";
 
         button.onclick = function () {
-          // Si l'élément est déjà dans la liste, on le retire
+          // If the element is already in the list, remove it
           if (finalList.includes(element)) {
             finalList.splice(finalList.indexOf(element), 1);
-            button.style.backgroundColor = ""; // not selected
-          } else { // Sinon, on l'ajoute à la liste
+            button.toggleClass("selected", false);
+          } else { // Instead, add it to the list
             finalList.push(element);
-            button.style.backgroundColor = "green"; // selected
+            button.toggleClass("selected", true);
           }
         };
       });
@@ -84,68 +81,51 @@ export class CourseTracker extends ItemView {
     });
   }
 
-  // Crée un conteneur pour la liste finale et affiche les boutons
+  // Create the final list
   createFinalList(container: Element, finalList: String[]) {
-    // Création d'un conteneur pour la liste finale
     let finalListContainer = container.createDiv();
-    finalListContainer.id = "finalListContainer"; // Ajout d'un ID pour faciliter l'accès ultérieurement
 
-    // Ajouter un bouton pour afficher la liste finale dans la console ou où vous le souhaitez
-    let showFinalListButton = container.createEl("button", { text: "Display list" });
-    showFinalListButton.style.margin = "5px";
-    showFinalListButton.style.backgroundColor = "#c78100";
-    showFinalListButton.style.fontSize = "1rem";
-    showFinalListButton.style.fontFamily = "Cascadia";
+    let showFinalListButton = container.createEl("button", { text: "Display list", cls: "showFinalListButton" });
 
     showFinalListButton.onclick = function () {
-      // Vide le conteneur avant d'ajouter les éléments de la liste finale
-      finalListContainer.innerHTML = '';
+      finalListContainer.empty();
 
-      // Crée une liste à puces pour les éléments de la liste finale
       let ul = container.createEl("ul");
       finalList.forEach(item => {
         let li = container.createEl("li");
 
-        // Crée la case à cocher
         let checkbox = container.createEl("input", { type: "checkbox" });
         checkbox.id = item as string;
         checkbox.name = item as string;
 
-        // Crée un label pour la case à cocher
         let label = container.createEl("label");
         label.htmlFor = item as string;
         label.appendChild(document.createTextNode(item as string));
 
-        // Ajoute la case à cocher et le label au li, puis ajoute le li au ul
         li.appendChild(checkbox);
         li.appendChild(label);
         ul.appendChild(li);
       });
       finalListContainer.appendChild(ul);
 
-      // Si la liste est vide, affiche un message
+      // If list is empty, return this
       if (finalList.length === 0) {
-        finalListContainer.textContent = "List is empty !";
+        finalListContainer.createEl('p', { text: "Please select an item to display the list." });
       }
     };
 
     let clearListButton = container.createEl("button", { text: "Clear list" });
-    clearListButton.style.margin = "5px";
 
     // Clear function
     clearListButton.onclick = () => {
-      // Réinitialise l'état de tous les boutons
       Array.from(this.contentEl.querySelectorAll("button")).forEach(button => {
         if (finalList.includes(String(button.textContent))) {
-          button.style.backgroundColor = ""; // réinitialise la couleur d'arrière-plan
+          button.toggleClass("selected", false);
         }
       });
 
-      // Vide la liste finale
       finalList.length = 0;
-
-      // Vide le conteneur de la liste finale
-      finalListContainer.innerHTML = '';
+      finalListContainer.empty();
     };
   }
 }
