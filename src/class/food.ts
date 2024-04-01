@@ -7,7 +7,7 @@ export class Food {
   constructor(name: string, codebar: string) {
     this.name = name;
     this.codebar = codebar;
-    this.imagehref = '';
+    this.imagehref = 'https://static.vecteezy.com/ti/vecteur-libre/p1/6253524-icone-de-point-d-interrogation-gratuit-vectoriel.jpg';
   }
 
   async getApi(): Promise<any> {

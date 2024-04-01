@@ -46,6 +46,10 @@ export class CourseTracker extends ItemView {
     this.displayObject(containerDivLeft, containerDivRight, finalList);
     this.createLine(containerDivLeft);
     this.createFinalList(containerDivLeft, finalList)
+
+    const footerContainer = container.createDiv({ cls: "footerContainer" });
+    footerContainer.createDiv({ cls: ["withoutCodebarre", 'footerRedCircle'] });
+    footerContainer.createEl("p", { text: "If a red circle is displayed just near a element, it's because there isn't codebarre" });
   }
 
   // Create a horizontal line
@@ -77,6 +81,8 @@ export class CourseTracker extends ItemView {
       // For each element in the category, create a button
       category.array.forEach((element: Food, _) => {
         let button = container.createEl("button", { text: element.name });
+        if (element.codebar === "")
+          button.createDiv({ cls: "withoutCodebarre" });
 
         button.onclick = () => {
           // If the element is already in the list, remove it
@@ -89,7 +95,8 @@ export class CourseTracker extends ItemView {
           }
 
           element.getApi().then((_) => {
-            this.refreshList(container, containerList, finalList);
+            console.log("Image updated");
+            this.refreshList2(container, containerList, finalList);
           });
         };
       });
@@ -122,23 +129,17 @@ export class CourseTracker extends ItemView {
   refreshList2(container: Element, finalListContainer: Element, finalList: Food[]) {
     finalListContainer.empty();
 
-    let ul = container.createEl("ul");
     finalList.forEach((food: Food) => {
-      let li = container.createEl("li");
+      // Create a div for each food with h2 title and image
+      let div = container.createDiv({ cls: "food" });
+      let h2 = container.createEl("h2", { text: food.name });
+      let img = container.createEl("img", { attr: { src: food.imagehref } });
 
-      let checkbox = container.createEl("input", { type: "checkbox" });
-      checkbox.id = food.name;
-      checkbox.name = food.name;
+      div.appendChild(h2);
+      div.appendChild(img);
 
-      let label = container.createEl("label");
-      label.htmlFor = food.name;
-      label.appendChild(document.createTextNode(food.name));
-
-      li.appendChild(checkbox);
-      li.appendChild(label);
-      ul.appendChild(li);
+      finalListContainer.appendChild(div);
     });
-    finalListContainer.appendChild(ul);
   }
 
   // Create the final list

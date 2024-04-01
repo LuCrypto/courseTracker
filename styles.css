@@ -37,6 +37,23 @@ button {
   width: 50% !important;
 
   display: flex;
+  /* Faire en sorte qu'il y ait max 4 élements et qu'ils ont max 25% de width */
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.food {
+  max-width: 25%;
+}
+
+.withoutCodebarre {
+  background-image: url("https://upload.wikimedia.org/wikipedia/commons/9/9e/WX_circle_red.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  width: 5px;
+  height: 5px;
 }
 
 
@@ -51,4 +68,13 @@ button {
 
 .selected {
   background-color: green !important;
+}
+
+.footerContainer {
+  display: flex;
+}
+
+.footerRedCircle {
+  margin-top: 1.3em;
+  margin-right: 5px;
 }
