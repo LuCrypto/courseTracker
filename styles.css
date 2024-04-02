@@ -27,6 +27,104 @@ button {
   display: flex;
 }
 
+.headerFood {
+  /* Mettre une jolie écriture bien visible */
+  font-size: 0.8rem;
+  font-family: "Cascadia";
+  background-color: #C78100 !important;
+
+  /* Mettre un peu de marge */
+  margin: 5px;
+
+  /* Mettre un peu de padding */
+  padding: 5px;
+
+  /* Mettre un peu de bordure */
+  border: 1px solid black;
+
+  /* Mettre un peu de radius */
+  border-radius: 5px;
+
+  /* Mettre un peu de couleur */
+  color: white;
+
+  /* Mettre un peu de flex */
+  display: flex;
+
+  /* Mettre un peu de justify */
+  justify-content: space-between;
+
+  /* Mettre un peu de align */
+  align-items: center;
+
+  /* Mettre un peu de cursor */
+  cursor: pointer;
+}
+
+.nutriScoreA {
+  background-color: green !important;
+}
+
+.nutriScoreB {
+  background-color: rgb(149, 236, 17) !important;
+}
+
+.nutriScoreC {
+  background-color: rgba(255, 255, 0, 0.541) !important;
+}
+
+.nutriScoreD {
+  background-color: orange !important;
+}
+
+.nutriScoreE {
+  background-color: red !important;
+}
+
+.novaGroup1 {
+  background-color: green !important;
+}
+
+.novaGroup2 {
+  background-color: rgba(255, 255, 0, 0.541) !important;
+}
+
+.novaGroup3 {
+  background-color: orange !important;
+}
+
+.novaGroup4 {
+  background-color: red !important;
+}
+
+.goodCase {
+  background-color: green !important;
+}
+
+.baseCase {
+  background-color: red !important;
+}
+
+.ecoScoreA {
+  background-color: green !important;
+}
+
+.ecoScoreB {
+  background-color: rgba(255, 255, 0, 0.541) !important;
+}
+
+.ecoScoreC {
+  background-color: orange !important;
+}
+
+.ecoScoreD {
+  background-color: red !important;
+}
+
+.ecoScoreE {
+  background-color: black !important;
+}
+
 .containerDivLeft {
   background-color: rgb(19, 122, 114) !important;
   width: 50% !important;
@@ -40,10 +138,61 @@ button {
   /* Faire en sorte qu'il y ait max 4 élements et qu'ils ont max 25% de width */
   flex-wrap: wrap;
   justify-content: space-around;
+
+  /* Faire en sorte qu'on peut scroller */
+  overflow-y: auto;
+  overflow: auto;
 }
 
 .food {
-  max-width: 25%;
+  max-width: 50%;
+}
+
+.foodHeader {
+  display: flex;
+  background-color: rgba(231, 167, 231, 0.568);
+}
+
+.foodHeader * {
+  min-width: 50%;
+}
+
+.foodHeader2 {
+  display: flex;
+  flex-direction: column;
+  min-width: 50%;
+}
+
+.nutrientLevels {
+  display: flex;
+  flex-direction: column;
+}
+
+.nutrientLevels p {
+  margin: 2px;
+}
+
+.foodHeader2>p {
+  margin: 2px;
+}
+
+.foodContent {
+  display: flex;
+}
+
+.foodText {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  padding: 5px;
+}
+
+.foodText * {
+  margin: 5px;
+}
+
+.foodImage {
+  width: 50%;
 }
 
 .withoutCodebarre {
@@ -77,4 +226,33 @@ button {
 .footerRedCircle {
   margin-top: 1.3em;
   margin-right: 5px;
+}
+
+.nutrientLevelsSeparatorLow {
+  width: 10px;
+  height: 10px;
+
+  border-radius: 1em;
+  background-color: green;
+}
+
+.nutrientLevelsSeparatorMedium {
+  width: 10px;
+  height: 10px;
+
+  border-radius: 1em;
+  background-color: orange;
+}
+
+.nutrientLevelsSeparatorHigh {
+  width: 10px;
+  height: 10px;
+
+  border-radius: 1em;
+  background-color: red;
+}
+
+.group {
+  display: flex;
+  align-items: center;
 }

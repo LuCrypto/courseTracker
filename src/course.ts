@@ -131,14 +131,43 @@ export class CourseTracker extends ItemView {
 
     finalList.forEach((food: Food) => {
       // Create a div for each food with h2 title and image
-      let div = container.createDiv({ cls: "food" });
-      let h2 = container.createEl("h2", { text: food.name });
-      let img = container.createEl("img", { attr: { src: food.imagehref } });
+      let div = finalListContainer.createDiv({ cls: "food" });
 
-      div.appendChild(h2);
-      div.appendChild(img);
+      let divHeader = div.createDiv({ cls: "foodHeader" });
+      let a = divHeader.createEl("a", { attr: { href: food?.link, target: "_blank" } });
+      let h2 = a.createEl("h2", { text: food?.name });
 
-      finalListContainer.appendChild(div);
+      if (food.nutriscore_grade === undefined) return;
+
+      let divHeader2 = divHeader.createDiv({ cls: "foodHeader2" });
+      divHeader2.createEl("p", { text: `Nutri score : ${food?.nutriscore_grade}`, cls: ["headerFood", (food?.nutriscore_grade === 'A') ? "nutriScoreA" : (food?.nutriscore_grade === 'B') ? "nutriScoreB" : (food?.nutriscore_grade === 'C') ? "nutriScoreC" : (food?.nutriscore_grade === 'D') ? "nutriScoreD" : "nutriScoreE"] });
+      divHeader2.createEl("p", { text: `Nova group : ${food?.nova_group}`, cls: ["headerFood", (food?.nova_group === '1') ? "novaGroup1" : (food?.nova_group === '2') ? "novaGroup2" : (food?.nova_group === '3') ? "novaGroup3" : "novaGroup4"] });
+      divHeader2.createEl("p", { text: `Eco score : ${food?.ecoscore_grade}`, cls: ["headerFood", (food?.ecoscore_grade === 'A') ? "ecoScoreA" : (food?.ecoscore_grade === 'B') ? "ecoScoreB" : (food?.ecoscore_grade === 'C') ? "ecoScoreC" : (food?.ecoscore_grade === 'D') ? "ecoScoreD" : "ecoScoreE"] });
+      divHeader2.createEl("p", { text: `Additives : ${food?.additives}`, cls: ["headerFood", food?.additives?.length === 0 ? "goodCase" : "baseCase"] });
+
+      let divContent = div.createDiv({ cls: "foodContent" });
+      divContent.createEl("img", { attr: { src: food?.imagehref }, cls: "foodImage" });
+      let divText = divContent.createDiv({ cls: "foodText" });
+      divText.createEl("p", { text: 'Quantité : ' + food?.quantity });
+      divText.createEl("p", { text: 'Ingrédients : ' + food?.ingredients_n });
+      let nutrientLevels = divText.createDiv({ cls: "nutrientLevels" });
+      let group1 = nutrientLevels.createDiv({ cls: "group" });
+      group1.createSpan({ cls: (food?.nutrient_levels?.fat === 'low') ? "nutrientLevelsSeparatorLow" : (food?.nutrient_levels?.fat === 'high') ? "nutrientLevelsSeparatorHigh" : "nutrientLevelsSeparatorMedium" });
+      group1.createEl("p", { text: 'Fat : ' + food?.nutrient_levels?.fat });
+
+      let group2 = nutrientLevels.createDiv({ cls: "group" });
+      group2.createSpan({ cls: (food?.nutrient_levels?.salt === 'low') ? "nutrientLevelsSeparatorLow" : (food?.nutrient_levels?.salt === 'high') ? "nutrientLevelsSeparatorHigh" : "nutrientLevelsSeparatorMedium" });
+      group2.createEl("p", { text: 'Salt : ' + food?.nutrient_levels?.salt });
+
+      let group3 = nutrientLevels.createDiv({ cls: "group" });
+      group3.createSpan({ cls: (food?.nutrient_levels?.['saturated-fat'] === 'low') ? "nutrientLevelsSeparatorLow" : (food?.nutrient_levels?.['saturated-fat'] === 'high') ? "nutrientLevelsSeparatorHigh" : "nutrientLevelsSeparatorMedium" });
+      group3.createEl("p", { text: 'Saturated fat : ' + food?.nutrient_levels?.['saturated-fat'] });
+
+      let group4 = nutrientLevels.createDiv({ cls: "group" });
+      group4.createSpan({ cls: (food?.nutrient_levels?.sugars === 'low') ? "nutrientLevelsSeparatorLow" : (food?.nutrient_levels?.sugars === 'high') ? "nutrientLevelsSeparatorHigh" : "nutrientLevelsSeparatorMedium" });
+      group4.createEl("p", { text: 'Sugars : ' + food?.nutrient_levels?.sugars });
+
+      divText.createEl("p", { text: 'Tableau score : X' });
     });
   }
 
