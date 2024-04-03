@@ -8,7 +8,7 @@ class MonPlugin extends Plugin {
 		// Nous ajoutons notre vue personnalisée à l'application
 		this.registerView(
 			MY_VIEW,
-			(leaf) => new CourseTracker(leaf)
+			(leaf) => new CourseTracker(leaf, this)
 		);
 
 		// Ajoutez un élément de menu pour ouvrir votre vue personnalisée

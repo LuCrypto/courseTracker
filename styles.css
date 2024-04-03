@@ -27,6 +27,50 @@ button {
   display: flex;
 }
 
+.categoryNameHeader {
+  display: flex;
+  align-items: center;
+}
+
+.modalAddButtonContent {
+  display: flex;
+}
+
+.modalAddButtonContent>h1 {
+  color: black;
+}
+
+.modalAddButton {
+  background-color: #ffffff !important;
+  position: absolute;
+
+  top: 45%;
+  left: 30%;
+
+  height: 10%;
+  width: 40%;
+  color: black;
+  border: none;
+  border-radius: 5px;
+  padding: 5px;
+
+  display: none;
+}
+
+.modalAddButtonOpen {
+  display: block !important;
+}
+
+.modalAddButton>h1 {
+  color: black;
+}
+
+.categoryNameHeader>button {
+  width: 8px;
+  height: 20px;
+  margin: 2px;
+}
+
 .headerFood {
   /* Mettre une jolie écriture bien visible */
   font-size: 0.8rem;

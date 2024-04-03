@@ -1,4 +1,4 @@
-import { ItemView } from "obsidian";
+import { ItemView, Plugin } from "obsidian";
 import { MY_VIEW, NAME_APPLI } from "./constants";
 import { objectCheeze } from "./data/cheeze";
 import { objectFruit } from "./data/fruit";
@@ -11,8 +11,11 @@ import { Food } from "./class/food";
 import { containsFoodWithCodebar, indexOfFoodByName } from "./utils/helpers";
 
 export class CourseTracker extends ItemView {
-  constructor(leaf: any) {
+  plugin: Plugin;
+
+  constructor(leaf: any, plugin: Plugin) {
     super(leaf);
+    this.plugin = plugin
   }
 
   // This method returns the view ID. Obsidian uses it to identify the view.
@@ -27,6 +30,12 @@ export class CourseTracker extends ItemView {
 
   // This method is called when the view is opened.
   async onOpen() {
+    console.log(`Répertoire courant : ${process.cwd()}`);
+    // this.plugin.saveData({ name: 'tesst', codebar: '123456789', category: 'fruit' });
+    // this.plugin.loadData();
+
+    await this.readDataJson()
+
     const finalList: Food[] = [];
 
     const container: Element = this.containerEl.children[1];
@@ -50,6 +59,34 @@ export class CourseTracker extends ItemView {
     const footerContainer = container.createDiv({ cls: "footerContainer" });
     footerContainer.createDiv({ cls: ["withoutCodebarre", 'footerRedCircle'] });
     footerContainer.createEl("p", { text: "If a red circle is displayed just near a element, it's because there isn't codebarre" });
+  }
+
+  // Read data.json and add value to the list
+  async readDataJson() {
+    const data = await this.plugin.loadData();
+
+    for (let i = 0; i < data.length; i++) {
+      const element: dataInterface = data[i];
+      if (element?.category === 'fruit') {
+        objectFruit.array.push(new Food(element?.name, element?.codebar));
+      } else if (element?.category === 'meat') {
+        objectMeat.array.push(new Food(element?.name, element?.codebar));
+      } else if (element?.category === 'vegetables') {
+        objectVegetables.array.push(new Food(element?.name, element?.codebar));
+      } else if (element?.category === 'starches') {
+        objectStarches.array.push(new Food(element?.name, element?.codebar));
+      } else if (element?.category === 'cheeze') {
+        objectCheeze.array.push(new Food(element?.name, element?.codebar));
+      } else if (element?.category === 'spices') {
+        objectOther.array.push(new Food(element?.name, element?.codebar));
+      } else if (element?.category === 'other') {
+        objectOther.array.push(new Food(element?.name, element?.codebar));
+      } else {
+        console.error('Category not found');
+      }
+    }
+
+    return data;
   }
 
   // Create a horizontal line
@@ -76,7 +113,41 @@ export class CourseTracker extends ItemView {
     const allObject: Category[] = this.initObject();
 
     allObject.forEach((category, _) => {
-      container.createEl("h1", { text: category.name });
+      let div = container.createEl("div", { cls: "categoryNameHeader" });
+      div.createEl("h1", { text: category.name });
+      let buttonAdd = div.createEl("button", { text: '+', cls: 'addButton' });
+
+      console.log('category.name.toString() : ', category.name.toString())
+      let div2 = container.createDiv({ cls: "modalAddButton" });
+      let div3 = div2.createDiv({ cls: "modalAddButtonContent" });
+      div3.createEl("h1", { text: `Add codebarre to ${category.name.toString()}` });
+      let cross = div3.createEl("button", { text: 'X', cls: 'cross' });
+
+      let div4 = div2.createDiv("div");
+      let inputName = div4.createEl("input", { attr: { type: "text", placeholder: "Name" } });
+      let inputCorebar = div4.createEl("input", { attr: { type: "text", placeholder: "Codebarre" } });
+      let buttonAddFinal = div4.createEl("button", { text: "Add" });
+
+      cross.onclick = () => {
+        div2.toggleClass("modalAddButtonOpen", false);
+      }
+
+      buttonAdd.onclick = () => {
+        div2.toggleClass("modalAddButtonOpen", true);
+      }
+
+      buttonAddFinal.onclick = async () => {
+        // Get value of input 
+        let value = inputCorebar.value;
+        let name = inputName.value;
+        console.log('Value : ', value);
+
+        // TODO Verify codebar 
+
+        const arrayData = await this.plugin.loadData();
+        arrayData.push({ name: name, codebar: value, category: category.name.toString().toLowerCase() });
+        this.plugin.saveData(arrayData);
+      };
 
       // For each element in the category, create a button
       category.array.forEach((element: Food, _) => {
