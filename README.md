@@ -12,11 +12,8 @@ During the buying, you just mark item that you take into the store
 
 You also can **Clear list**
 
-## The base plugin 
-![alt text](/public/image.png)
-
-## You can add ingredients and show them
-![alt text](/public/image-1.png)
+## New version
+![Image - New version of app](/public/version-0.0.5.gif)
 
 - Use **Display list** for display them
 - Use **Clear list** for clear the list
