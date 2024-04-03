@@ -206,10 +206,13 @@ export class CourseTracker extends ItemView {
       if (food.nutriscore_grade === undefined) return;
 
       let divHeader2 = divHeader.createDiv({ cls: "foodHeader2" });
-      divHeader2.createEl("p", { text: `Nutri score : ${food?.nutriscore_grade}`, cls: ["headerFood", (food?.nutriscore_grade === 'A') ? "nutriScoreA" : (food?.nutriscore_grade === 'B') ? "nutriScoreB" : (food?.nutriscore_grade === 'C') ? "nutriScoreC" : (food?.nutriscore_grade === 'D') ? "nutriScoreD" : "nutriScoreE"] });
-      divHeader2.createEl("p", { text: `Nova group : ${food?.nova_group}`, cls: ["headerFood", (food?.nova_group === '1') ? "novaGroup1" : (food?.nova_group === '2') ? "novaGroup2" : (food?.nova_group === '3') ? "novaGroup3" : "novaGroup4"] });
-      divHeader2.createEl("p", { text: `Eco score : ${food?.ecoscore_grade}`, cls: ["headerFood", (food?.ecoscore_grade === 'A') ? "ecoScoreA" : (food?.ecoscore_grade === 'B') ? "ecoScoreB" : (food?.ecoscore_grade === 'C') ? "ecoScoreC" : (food?.ecoscore_grade === 'D') ? "ecoScoreD" : "ecoScoreE"] });
-      divHeader2.createEl("p", { text: `Additives : ${food?.additives}`, cls: ["headerFood", food?.additives?.length === 0 ? "goodCase" : "baseCase"] });
+
+      divHeader2.createEl("p", { text: `Nutri score : ${food?.nutriscore_grade}`, cls: ["headerFood", (food?.nutriscore_grade === undefined || food?.nutriscore_grade === '' || food?.nutriscore_grade === 'UNKNOWN') ? 'ecoScoreUndefined' : (food?.nutriscore_grade === 'A') ? "nutriScoreA" : (food?.nutriscore_grade === 'B') ? "nutriScoreB" : (food?.nutriscore_grade === 'C') ? "nutriScoreC" : (food?.nutriscore_grade === 'D') ? "nutriScoreD" : "nutriScoreE"] });
+
+      divHeader2.createEl("p", { text: `Nova group : ${food?.nova_group}`, cls: ["headerFood", (food?.nova_group === undefined || food?.nova_group === '') ? 'novaGroupUndefined' : (food?.nova_group === '1') ? "novaGroup1" : (food?.nova_group === '2') ? "novaGroup2" : (food?.nova_group === '3') ? "novaGroup3" : "novaGroup4"] });
+
+      divHeader2.createEl("p", { text: `Eco score : ${food?.ecoscore_grade}`, cls: ["headerFood", (food?.ecoscore_grade === undefined || food?.ecoscore_grade === '' || food?.ecoscore_grade === 'UNKNOWN') ? 'ecoScoreUndefined' : (food?.ecoscore_grade === 'A') ? "ecoScoreA" : (food?.ecoscore_grade === 'B') ? "ecoScoreB" : (food?.ecoscore_grade === 'C') ? "ecoScoreC" : (food?.ecoscore_grade === 'D') ? "ecoScoreD" : "ecoScoreE"] });
+      divHeader2.createEl("p", { text: `Additives : ${food?.additives}`, cls: ["headerFood", (food?.additives === undefined || food?.additives?.length === 0) ? "goodCase" : "baseCase"] });
 
       let divContent = div.createDiv({ cls: "foodContent" });
       divContent.createEl("img", { attr: { src: food?.imagehref }, cls: "foodImage" });

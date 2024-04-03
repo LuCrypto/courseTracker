@@ -105,6 +105,10 @@ button {
   cursor: pointer;
 }
 
+.nutriScoreUndefined {
+  background-color: grey !important;
+}
+
 .nutriScoreA {
   background-color: green !important;
 }
@@ -123,6 +127,10 @@ button {
 
 .nutriScoreE {
   background-color: red !important;
+}
+
+.novaGroupUndefined {
+  background-color: grey !important;
 }
 
 .novaGroup1 {
@@ -147,6 +155,10 @@ button {
 
 .baseCase {
   background-color: red !important;
+}
+
+.ecoScoreUndefined {
+  background-color: grey !important;
 }
 
 .ecoScoreA {
