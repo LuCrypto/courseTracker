@@ -189,6 +189,7 @@ button {
 .containerDivRight {
   background-color: rgb(136, 46, 46) !important;
   width: 50% !important;
+  max-height: 850px;
 
   display: flex;
   /* Faire en sorte qu'il y ait max 4 élements et qu'ils ont max 25% de width */
