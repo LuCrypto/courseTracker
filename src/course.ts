@@ -12,6 +12,7 @@ import { containsFoodWithCodebar, indexOfFoodByName } from "./utils/helpers";
 
 export class CourseTracker extends ItemView {
   plugin: Plugin;
+  finalList: Food[] = [];
 
   constructor(leaf: any, plugin: Plugin) {
     super(leaf);
@@ -30,13 +31,10 @@ export class CourseTracker extends ItemView {
 
   // This method is called when the view is opened.
   async onOpen() {
-    console.log(`Répertoire courant : ${process.cwd()}`);
     // this.plugin.saveData({ name: 'tesst', codebar: '123456789', category: 'fruit' });
     // this.plugin.loadData();
 
     await this.readDataJson()
-
-    const finalList: Food[] = [];
 
     const container: Element = this.containerEl.children[1];
     container.empty();
@@ -52,9 +50,9 @@ export class CourseTracker extends ItemView {
     this.createLine(containerDivLeft);
     this.createLine(containerDivRight);
 
-    this.displayObject(containerDivLeft, containerDivRight, finalList);
+    this.displayObject(containerDivLeft, containerDivRight);
     this.createLine(containerDivLeft);
-    this.createFinalList(containerDivLeft, finalList)
+    this.createFinalList(containerDivLeft)
 
     const footerContainer = container.createDiv({ cls: "footerContainer" });
     footerContainer.createDiv({ cls: ["withoutCodebarre", 'footerRedCircle'] });
@@ -109,7 +107,7 @@ export class CourseTracker extends ItemView {
   }
 
   // Display categories and elements
-  displayObject(container: Element, containerList: Element, finalList: Food[]) {
+  displayObject(container: Element, containerList: Element) {
     const allObject: Category[] = this.initObject();
 
     allObject.forEach((category, _) => {
@@ -117,7 +115,6 @@ export class CourseTracker extends ItemView {
       div.createEl("h1", { text: category.name });
       let buttonAdd = div.createEl("button", { text: '+', cls: 'addButton' });
 
-      console.log('category.name.toString() : ', category.name.toString())
       let div2 = container.createDiv({ cls: "modalAddButton" });
       let div3 = div2.createDiv({ cls: "modalAddButtonContent" });
       div3.createEl("h1", { text: `Add codebarre to ${category.name.toString()}` });
@@ -140,7 +137,6 @@ export class CourseTracker extends ItemView {
         // Get value of input 
         let value = inputCorebar.value;
         let name = inputName.value;
-        console.log('Value : ', value);
 
         // TODO Verify codebar 
 
@@ -157,17 +153,16 @@ export class CourseTracker extends ItemView {
 
         button.onclick = () => {
           // If the element is already in the list, remove it
-          if (containsFoodWithCodebar(finalList, element.codebar)) {
-            finalList.splice(indexOfFoodByName(finalList, element.name), 1);
+          if (containsFoodWithCodebar(this.finalList, element.codebar)) {
+            this.finalList.splice(indexOfFoodByName(this.finalList, element.name), 1);
             button.toggleClass("selected", false);
           } else { // Instead, add it to the list
-            finalList.push(element);
+            this.finalList.push(element);
             button.toggleClass("selected", true);
           }
 
           element.getApi().then((_) => {
-            console.log("Image updated");
-            this.refreshList2(container, containerList, finalList);
+            this.refreshList2(container, containerList);
           });
         };
       });
@@ -175,11 +170,11 @@ export class CourseTracker extends ItemView {
     });
   }
 
-  refreshList(container: Element, finalListContainer: Element, finalList: Food[]) {
+  refreshList(container: Element, finalListContainer: Element) {
     finalListContainer.empty();
 
     let ul = container.createEl("ul");
-    finalList.forEach((food: Food) => {
+    this.finalList.forEach((food: Food) => {
       let li = container.createEl("li");
 
       let checkbox = container.createEl("input", { type: "checkbox" });
@@ -197,10 +192,10 @@ export class CourseTracker extends ItemView {
     finalListContainer.appendChild(ul);
   }
 
-  refreshList2(container: Element, finalListContainer: Element, finalList: Food[]) {
+  refreshList2(container: Element, finalListContainer: Element) {
     finalListContainer.empty();
 
-    finalList.forEach((food: Food) => {
+    this.finalList.forEach((food: Food) => {
       // Create a div for each food with h2 title and image
       let div = finalListContainer.createDiv({ cls: "food" });
 
@@ -243,16 +238,16 @@ export class CourseTracker extends ItemView {
   }
 
   // Create the final list
-  createFinalList(container: Element, finalList: Food[]) {
+  createFinalList(container: Element) {
     const finalListContainer = container.createDiv();
 
     let showFinalListButton = container.createEl("button", { text: "Display list", cls: "showFinalListButton" });
 
     showFinalListButton.onclick = () => {
-      this.refreshList(container, finalListContainer, finalList);
+      this.refreshList(container, finalListContainer);
 
       // If list is empty, return this
-      if (finalList.length === 0) {
+      if (this.finalList.length === 0) {
         finalListContainer.createEl('p', { text: "Please select an item to display the list." });
       }
     };
@@ -262,12 +257,16 @@ export class CourseTracker extends ItemView {
     // Clear function
     clearListButton.onclick = () => {
       Array.from(this.contentEl.querySelectorAll("button")).forEach(button => {
-        if (containsFoodWithCodebar(finalList, String(button.textContent))) {
+        if (button.classList.contains("selected")) {
           button.toggleClass("selected", false);
         }
       });
 
-      finalList.length = 0;
+      Array.from(this.contentEl.querySelectorAll(".containerDivRight")).forEach(div => {
+        div.empty();
+      });
+
+      this.finalList.length = 0;
       finalListContainer.empty();
     };
   }
