@@ -9,6 +9,7 @@ import { objectVegetables } from "./data/vegetables";
 import { Category } from "./interface/category";
 import { Food } from "./class/food";
 import { containsFoodWithCodebar, indexOfFoodByName } from "./utils/helpers";
+import { dataInterface } from "./interface/dataInterface";
 
 export class CourseTracker extends ItemView {
   plugin: Plugin;

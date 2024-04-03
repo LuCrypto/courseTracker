@@ -1,4 +1,4 @@
-interface dataInterface {
+export interface dataInterface {
   name: string;
   codebar: string;
   category: string;
